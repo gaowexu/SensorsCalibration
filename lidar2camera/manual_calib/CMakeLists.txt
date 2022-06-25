@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(lidar2camera)
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++14 -g -Wall")
 
 find_package(Pangolin REQUIRED)
 include_directories(${Pangolin_INCLUDE_DIRS})
@@ -23,9 +23,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 file(GLOB_RECURSE PARSER_PATH src/*.cpp)
 add_library(${PROJECT_NAME} STATIC ${PARSER_PATH})
-target_link_libraries(${PROJECT_NAME} libjsoncpp.a ${OpenCV_LIBS} ${Boost_SYSTEM_LIBRARY})
+target_link_libraries(${PROJECT_NAME} GLEW libjsoncpp.a ${OpenCV_LIBS} ${Boost_SYSTEM_LIBRARY} ${Pangolin_LIBRARY})
 
 add_executable(run_lidar2camera src/run_lidar2camera.cpp)
-target_link_libraries(run_lidar2camera ${PROJECT_NAME})
-target_link_libraries(run_lidar2camera ${PCL_LIBRARIES})
-target_link_libraries(run_lidar2camera ${Pangolin_LIBRARIES})
+target_link_libraries(run_lidar2camera GLEW ${PROJECT_NAME} ${Pangolin_LIBRARIES})
+target_link_libraries(run_lidar2camera GLEW ${PCL_LIBRARIES} ${Pangolin_LIBRARIES})
+target_link_libraries(run_lidar2camera GLEW ${Pangolin_LIBRARIES})
+
